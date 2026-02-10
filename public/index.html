@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder Blocker 🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { accent: { 400: '#818cf8', 500: '#6366f1' }, primary: { 400: '#4ade80', 500: '#22c55e' } } } }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0a0a0f 0%, #0f1419 50%, #0a0a0f 100%); }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .btn-accent { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99,102,241,0.3); }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-500/10 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="relative z-10">
+        <header class="py-8 px-6">
+            <nav class="max-w-5xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🚀</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent-400 to-primary-400 bg-clip-text text-transparent">Founder Blocker</span>
+                </div>
+                <button class="btn-accent px-5 py-2 rounded-full text-sm font-medium">Get Started</button>
+            </nav>
+        </header>
+        
+        <main class="px-6 py-16">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h1 class="text-5xl font-bold mb-6">
+                    Track what you're<br>
+                    <span class="bg-gradient-to-r from-accent-400 to-primary-400 bg-clip-text text-transparent">waiting for</span>
+                </h1>
+                <p class="text-gray-400 text-lg">Never let a blocker slip through. Auto-nudge after 48 hours.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
+                <div class="glass rounded-3xl p-8">
+                    <div class="flex items-start gap-5">
+                        <div class="text-3xl">😫</div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">The Problem</h3>
+                            <p class="text-gray-400">"Waiting on Sarah for the API docs..." — buried in Slack. Three days later, nothing.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass rounded-3xl p-8">
+                    <div class="flex items-start gap-5">
+                        <div class="text-3xl">🎯</div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">The Solution</h3>
+                            <p class="text-gray-400">Track blockers with <code class="bg-white/10 px-2 py-1 rounded">/block</code>. Get gentle nudges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass rounded-3xl p-10 mb-16 max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-center mb-8">How It Works</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-accent-500/20 flex items-center justify-center text-xl font-bold text-accent-400">1</div>
+                        <p class="text-gray-400 text-sm">Type /block</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-accent-500/20 flex items-center justify-center text-xl font-bold text-accent-400">2</div>
+                        <p class="text-gray-400 text-sm">We track it</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-accent-500/20 flex items-center justify-center text-xl font-bold text-accent-400">3</div>
+                        <p class="text-gray-400 text-sm">Auto-nudge</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-primary-500/20 flex items-center justify-center text-xl font-bold text-primary-400">✓</div>
+                        <p class="text-gray-400 text-sm">Resolve</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                <div class="text-center p-8 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-bold mb-2">Free</h3>
+                    <div class="text-3xl font-bold mb-4">$0</div>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-6">
+                        <li>✓ 5 tracked items</li>
+                        <li>✓ Basic nudges</li>
+                    </ul>
+                    <button class="btn-accent w-full py-3 rounded-xl font-medium">Start Free</button>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-accent-500/10 to-purple-500/10 border border-accent-500/30">
+                    <h3 class="text-xl font-bold mb-2">Pro</h3>
+                    <div class="text-3xl font-bold mb-4">$9<span class="text-gray-500 text-sm font-normal">/mo</span></div>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-6">
+                        <li>✓ Unlimited items</li>
+                        <li>✓ Custom timing</li>
+                        <li>✓ Analytics</li>
+                    </ul>
+                    <button class="btn-accent w-full py-3 rounded-xl font-medium">Go Pro</button>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="py-6 px-6 border-t border-white/5 text-center">
+            <p class="text-gray-500 text-sm">© 2024 Founder Blocker. Built by Catalyst ⚡️</p>
+        </footer>
+    </div>
+</body>
+</html>
