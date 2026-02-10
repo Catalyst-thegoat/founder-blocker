@@ -2,6 +2,7 @@ const express = require('express');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,13 +23,13 @@ app.post('/api/block', (req, res) => {
     
     const db = loadDB();
     const userBlocks = db.blocks.filter(b => b.owner === owner && !b.resolved).length;
-    if (userBlocks >= 5) return res.status(403).json({ error: 'Free limit reached' });
+    if (userBlocks >= 3) return res.status(403).json({ error: 'Free limit reached. Upgrade to Pro.', upgradeUrl: '/pro' });
     
     const block = { id: crypto.randomBytes(4).toString('hex'), owner, target, message, created: new Date().toISOString(), resolved: false };
     db.blocks.push(block);
     saveDB(db);
     
-    res.json({ success: true, block, remaining: 5 - userBlocks - 1 });
+    res.json({ success: true, block, remaining: 3 - userBlocks - 1 });
 });
 
 app.get('/api/blocks', (req, res) => {
@@ -50,10 +51,32 @@ app.post('/api/resolve', (req, res) => {
     res.json({ success: true });
 });
 
+app.post('/api/create-checkout', async (req, res) => {
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [{
+                price_data: {
+                    currency: 'usd',
+                    product_data: { name: 'Founder Blocker Pro' },
+                    unit_amount: 999,
+                },
+                quantity: 1,
+            }],
+            mode: 'payment',
+            success_url: '/?success=true',
+            cancel_url: '/?canceled=true',
+        });
+        res.json({ url: session.url });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 app.get('/api/stats', (req, res) => {
     const db = loadDB();
     const active = db.blocks.filter(b => !b.resolved);
     res.json({ total: db.blocks.length, active: active.length, overdue: active.filter(b => new Date(b.created) < new Date(Date.now() - 48*60*60*1000)).length, resolved: db.blocks.length - active.length });
 });
 
-app.listen(PORT, () => { console.log('Founder Blocker v4 on port ' + PORT); });
+app.listen(PORT, () => { console.log('🚀 Founder Blocker v5 on port ' + PORT); });
