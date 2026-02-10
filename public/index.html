@@ -66,6 +66,29 @@
                 </div>
             </div>
             
+            <!-- Live Demo Section -->
+            <div class="glass rounded-3xl p-10 mb-16 max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold text-center mb-2">Try It Right Now</h3>
+                <p class="text-gray-400 text-center mb-8">Add a blocker and watch it get tracked</p>
+                
+                <div class="flex gap-3 mb-6">
+                    <input type="text" id="blockerInput" placeholder="What are you waiting for?" 
+                        class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-500 transition-colors">
+                    <input type="text" id="personInput" placeholder="Who?" 
+                        class="w-32 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-accent-500 transition-colors">
+                    <button onclick="addBlocker()" class="btn-accent px-6 py-3 rounded-xl font-medium">Add</button>
+                </div>
+                
+                <div id="blockersList" class="space-y-3">
+                    <!-- Demo blockers will appear here -->
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-white/5 flex justify-between text-sm text-gray-500">
+                    <span id="blockerCount">0 blockers tracked</span>
+                    <span id="avgWait">Avg wait: --</span>
+                </div>
+            </div>
+            
             <div class="glass rounded-3xl p-10 mb-16 max-w-4xl mx-auto">
                 <h3 class="text-2xl font-bold text-center mb-8">How It Works</h3>
                 <div class="grid md:grid-cols-4 gap-6">
@@ -115,5 +138,87 @@
             <p class="text-gray-500 text-sm">© 2024 Founder Blocker. Built by Catalyst ⚡️</p>
         </footer>
     </div>
+
+    <script>
+        let blockers = [];
+        
+        // Add a couple demo blockers
+        const demoBlockers = [
+            { id: 1, what: 'API documentation', who: 'Sarah', time: Date.now() - 86400000 * 2, status: 'pending' },
+            { id: 2, what: 'Design assets', who: 'Mike', time: Date.now() - 86400000 * 0.5, status: 'pending' }
+        ];
+        blockers = [...demoBlockers];
+        renderBlockers();
+        
+        function addBlocker() {
+            const what = document.getElementById('blockerInput').value.trim();
+            const who = document.getElementById('personInput').value.trim();
+            if (!what) return;
+            
+            blockers.push({
+                id: Date.now(),
+                what,
+                who: who || 'Someone',
+                time: Date.now(),
+                status: 'pending'
+            });
+            
+            document.getElementById('blockerInput').value = '';
+            document.getElementById('personInput').value = '';
+            renderBlockers();
+        }
+        
+        function resolveBlocker(id) {
+            blockers = blockers.map(b => b.id === id ? { ...b, status: 'resolved' } : b);
+            renderBlockers();
+        }
+        
+        function deleteBlocker(id) {
+            blockers = blockers.filter(b => b.id !== id);
+            renderBlockers();
+        }
+        
+        function renderBlockers() {
+            const container = document.getElementById('blockersList');
+            container.innerHTML = blockers.map(b => {
+                const hoursWaiting = Math.round((Date.now() - b.time) / 3600000);
+                const urgency = hoursWaiting > 48 ? 'text-red-400' : hoursWaiting > 24 ? 'text-yellow-400' : 'text-gray-400';
+                const badge = b.status === 'resolved' ? '<span class="text-primary-400 text-sm">✓ Resolved</span>' : 
+                    `<span class="${urgency}">${hoursWaiting}h waiting</span>`;
+                
+                return `
+                    <div class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 ${b.status === 'resolved' ? 'opacity-50' : ''}">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">${b.status === 'resolved' ? '✅' : '⏳'}</span>
+                            <div>
+                                <div class="font-medium">${b.what}</div>
+                                <div class="text-xs text-gray-500">Waiting on ${b.who}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            ${badge}
+                            ${b.status === 'pending' ? 
+                                `<button onclick="resolveBlocker(${b.id})" class="text-xs bg-primary-500/20 text-primary-400 px-3 py-1 rounded-full hover:bg-primary-500/30 transition-colors">Resolve</button>` :
+                                `<button onclick="deleteBlocker(${b.id})" class="text-xs bg-white/10 text-gray-400 px-3 py-1 rounded-full hover:bg-white/20 transition-colors">Remove</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const pending = blockers.filter(b => b.status === 'pending').length;
+            const total = blockers.length;
+            document.getElementById('blockerCount').textContent = `${pending} active blocker${pending !== 1 ? 's' : ''}`;
+            
+            if (blockers.length > 0) {
+                const avgHours = Math.round(blockers.reduce((sum, b) => sum + (Date.now() - b.time) / 3600000, 0) / blockers.length);
+                document.getElementById('avgWait').textContent = `Avg wait: ${avgHours}h`;
+            }
+        }
+        
+        // Enter key support
+        document.getElementById('blockerInput').addEventListener('keypress', e => e.key === 'Enter' && addBlocker());
+        document.getElementById('personInput').addEventListener('keypress', e => e.key === 'Enter' && addBlocker());
+    </script>
 </body>
 </html>
